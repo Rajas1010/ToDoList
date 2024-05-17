@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDoList</title>
+    <style>
+
+body, ul, li, input, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+
+input#inp {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+button#btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button#btn:hover {
+    background-color: #218838;
+}
+
+
+ul#listCon {
+    list-style-type: none;
+    margin-top: 0px;
+    width: 400px;
+    padding: 20PX;
+}
+
+
+ul#listCon li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+ul#listCon li button,#dlAll {
+    padding: 5px 10px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+#dlAll{
+    position: absolute;
+    padding: 10px 20px 10px 20px;
+    margin-top: 110px;
+    margin-right: 450px;
+}
+
+ul#listCon li button:hover {
+    background-color: #c82333;
+}
+
+    </style>
+</head>
+<body>
+        <input id="inp"></input>
+        <button id="btn"onclick="add()">add</button>
+        <ul id="listCon">
+            <li>something
+                <button onclick="dlt(event)">delete</button>
+            </li>
+        </ul>
+        <button onclick="delAll()" id="dlAll">DeleteAll</button>
+        <script>
+            var i=document.getElementById("inp");
+            var b=document.getElementById("btn");
+            var li=document.getElementById("listCon");
+            
+            function add()
+            {
+                var newLi=document.createElement("li");
+                newLi.innerHTML=inp.value+"<button onclick='dlt(event)'>delete</button>"
+                li.append(newLi);
+            }
+            function dlt(event)
+            {
+                event.target.parentElement.remove();
+            }
+            function delAll()
+            {
+                while (li.firstChild) {
+                    li.removeChild(li.firstChild);
+                }
+            }
+        </script>
+</body>
+</html>
