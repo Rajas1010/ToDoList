@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Local Storage Example</title>
+    <title>ToDo List</title>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Function to get the stored array from local storage
             function getStoredValues() {
                 let values = localStorage.getItem("values");
                 return values ? JSON.parse(values) : [];
             }
 
-            // Function to store the array in local storage
             function setStoredValues(values) {
                 localStorage.setItem("values", JSON.stringify(values));
             }
@@ -21,7 +19,6 @@
                 localStorage.removeItem("values");
                 displayValues();
             }
-            // Function to display the values in the div
             function displayValues() {
                 const values = getStoredValues();
                 const displayDiv = document.getElementById("display");
@@ -37,7 +34,6 @@
                 });
             }
 
-            // Function to delete a value by index
             window.deleteValue = function(index) {
                 let values = getStoredValues();
                 values.splice(index, 1);
@@ -45,7 +41,6 @@
                 displayValues();
             }
 
-            // Add event listener to the button
             document.getElementById("storeButton").addEventListener("click", function() {
                 const inputValue = document.getElementById("inputBox").value;
                 if (inputValue.trim() !== "") {
@@ -53,13 +48,12 @@
                     values.push(inputValue);
                     setStoredValues(values);
                     displayValues();
-                    document.getElementById("inputBox").value = ""; // Clear the input box
+                    document.getElementById("inputBox").value = ""; 
                 }
             });
             document.getElementById("deleteAllButton").addEventListener("click", function() {
                 deleteAllValues();
             });
-            // Display the stored values when the page loads
             displayValues();
         });
     </script>
