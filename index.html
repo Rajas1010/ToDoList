@@ -3,121 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDoList</title>
+    <title>Local Storage Example</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Function to get the stored array from local storage
+            function getStoredValues() {
+                let values = localStorage.getItem("values");
+                return values ? JSON.parse(values) : [];
+            }
+
+            // Function to store the array in local storage
+            function setStoredValues(values) {
+                localStorage.setItem("values", JSON.stringify(values));
+            }
+
+            window.deleteAllValues = function() {
+                localStorage.removeItem("values");
+                displayValues();
+            }
+            // Function to display the values in the div
+            function displayValues() {
+                const values = getStoredValues();
+                const displayDiv = document.getElementById("display");
+                displayDiv.innerHTML = "";
+
+                values.forEach((value, index) => {
+                    const valueDiv = document.createElement("div");
+                    valueDiv.innerHTML = `
+                        <span>${value}</span>
+                        <button onclick="deleteValue(${index})">Delete</button>
+                    `;
+                    displayDiv.appendChild(valueDiv);
+                });
+            }
+
+            // Function to delete a value by index
+            window.deleteValue = function(index) {
+                let values = getStoredValues();
+                values.splice(index, 1);
+                setStoredValues(values);
+                displayValues();
+            }
+
+            // Add event listener to the button
+            document.getElementById("storeButton").addEventListener("click", function() {
+                const inputValue = document.getElementById("inputBox").value;
+                if (inputValue.trim() !== "") {
+                    let values = getStoredValues();
+                    values.push(inputValue);
+                    setStoredValues(values);
+                    displayValues();
+                    document.getElementById("inputBox").value = ""; // Clear the input box
+                }
+            });
+            document.getElementById("deleteAllButton").addEventListener("click", function() {
+                deleteAllValues();
+            });
+            // Display the stored values when the page loads
+            displayValues();
+        });
+    </script>
     <style>
-
-body, ul, li, input, button {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+      body {
     font-family: Arial, sans-serif;
-}
-
-body {
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    height: 100vh;
-    background-color: #f0f0f0;
+    justify-content: center;
+    min-height: 100vh;
+    overflow: hidden;
 }
 
-
-input#inp {
+input[type="text"] {
     width: 300px;
     padding: 10px;
-    font-size: 16px;
+    margin: 10px 0;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 10px;
-}
-
-button#btn {
-    padding: 10px 20px;
+    border-radius: 4px;
     font-size: 16px;
-    color: #fff;
-    background-color: #28a745;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
 }
 
-button#btn:hover {
+button {
+    padding: 10px 15px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button#storeButton {
+    background-color: #28a745;
+    color: white;
+}
+
+button#storeButton:hover {
     background-color: #218838;
 }
 
-
-ul#listCon {
-    list-style-type: none;
-    margin-top: 0px;
-    width: 400px;
-    padding: 20PX;
+button#deleteAllButton {
+    background-color: #dc3545;
+    color: white;
 }
 
+button#deleteAllButton:hover {
+    background-color: #c82333;
+}
 
-ul#listCon li {
+#display {
+    width: 100%;
+    max-width: 400px;
+    max-height: 400px;
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+#display div {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
 }
 
-ul#listCon li button,#dlAll {
-    padding: 5px 10px;
-    font-size: 14px;
-    color: #fff;
-    background-color: #dc3545;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-}
-#dlAll{
-    position: absolute;
-    padding: 10px 20px 10px 20px;
-    margin-top: 110px;
-    margin-right: 450px;
+#display div:last-child {
+    border-bottom: none;
 }
 
-ul#listCon li button:hover {
-    background-color: #c82333;
+#display span {
+    flex-grow: 1;
+}
+
+#display button {
+    background-color: #ffc107;
+    color: white;
+}
+
+#display button:hover {
+    background-color: #e0a800;
 }
 
     </style>
 </head>
 <body>
-        <input id="inp"></input>
-        <button id="btn"onclick="add()">add</button>
-        <ul id="listCon">
-            <li>something
-                <button onclick="dlt(event)">delete</button>
-            </li>
-        </ul>
-        <button onclick="delAll()" id="dlAll">DeleteAll</button>
-        <script>
-            var i=document.getElementById("inp");
-            var b=document.getElementById("btn");
-            var li=document.getElementById("listCon");
-            
-            function add()
-            {
-                var newLi=document.createElement("li");
-                newLi.innerHTML=inp.value+"<button onclick='dlt(event)'>delete</button>"
-                li.append(newLi);
-            }
-            function dlt(event)
-            {
-                event.target.parentElement.remove();
-            }
-            function delAll()
-            {
-                while (li.firstChild) {
-                    li.removeChild(li.firstChild);
-                }
-            }
-        </script>
+    <input type="text" id="inputBox" placeholder="Enter a value">
+    <button id="storeButton">Store Value</button>
+    <button id="deleteAllButton">Delete All</button>
+    <div id="display"></div>
 </body>
 </html>
